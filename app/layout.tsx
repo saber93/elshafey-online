@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
-// Replace this placeholder domain with the final production domain before launch.
-const siteUrl = "https://example.com";
+// Update this value if a custom production domain replaces the Netlify URL.
+const siteUrl = "https://elshafey-family.netlify.app";
 
 export const viewport: Viewport = {
   width: "device-width",

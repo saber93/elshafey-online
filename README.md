@@ -20,7 +20,18 @@ checks.
 - Replace the six files in `public/images/` with real portraits while keeping
   the same filenames and 4:5 aspect ratio.
 - Edit bilingual interface and profile copy in `app/FamilyPage.tsx`.
-- Replace the clearly marked `https://example.com` placeholder in
-  `app/layout.tsx`, `public/robots.txt`, and `public/sitemap.xml` before using a
-  custom production domain.
+- Replace the current Netlify URL in `app/layout.tsx`, `public/robots.txt`, and
+  `public/sitemap.xml` if the site moves to a custom production domain.
 - Regenerate portrait placeholders with `python scripts/create-placeholders.py`.
+
+## Netlify deployment
+
+Netlify uses the native Next.js build configured in `netlify.toml`:
+
+```bash
+npm run build:netlify
+npx netlify deploy --prod
+```
+
+The regular `npm run build` command remains available for the Vinext/Cloudflare
+deployment target.

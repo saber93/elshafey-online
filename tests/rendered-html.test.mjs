@@ -45,6 +45,7 @@ test("server-renders the complete family profile and SEO metadata", async () => 
   }
 
   assert.match(html, /rel="canonical"/i);
+  assert.match(html, /https:\/\/elshafey-family\.netlify\.app/);
   assert.match(html, /property="og:image"/i);
   assert.match(html, /name="twitter:card"/i);
   assert.match(html, /type="application\/ld\+json"/i);
