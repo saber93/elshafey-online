@@ -77,12 +77,13 @@ test("permanently redirects the unlocalized root to the English URL", async () =
   assert.match(response.headers.get("location") ?? "", /\/en$/);
 });
 
-test("keeps localized routing, accessibility, and replaceable assets in source", async () => {
-  const [familyPage, languageLayout, css, sitemap, imageFiles] = await Promise.all([
+test("keeps localized routing, crawl directives, accessibility, and replaceable assets in source", async () => {
+  const [familyPage, languageLayout, css, sitemap, robots, imageFiles] = await Promise.all([
     readFile(new URL("../app/FamilyPage.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/[lang]/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
-    readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8"),
+    readFile(new URL("../app/sitemap.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/robots.ts", import.meta.url), "utf8"),
     readdir(new URL("../public/images/", import.meta.url)),
   ]);
 
@@ -99,9 +100,11 @@ test("keeps localized routing, accessibility, and replaceable assets in source",
   assert.match(languageLayout, /"@type": "ItemList"/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
   assert.match(css, /:focus-visible/);
-  assert.match(sitemap, /<loc>https:\/\/elshafey\.online\/en<\/loc>/);
-  assert.match(sitemap, /<loc>https:\/\/elshafey\.online\/ar<\/loc>/);
-  assert.match(sitemap, /hreflang="x-default"/);
+  assert.match(sitemap, /\["en", "ar"\]/);
+  assert.match(sitemap, /"x-default"/);
+  assert.match(sitemap, /alternates/);
+  assert.match(robots, /allow: "\/"/);
+  assert.match(robots, /https:\/\/elshafey\.online\/sitemap\.xml/);
 
   assert.deepEqual(imageFiles.sort(), [
     "faraj-el-shafey.jpg",
@@ -113,8 +116,6 @@ test("keeps localized routing, accessibility, and replaceable assets in source",
   ]);
 
   await Promise.all([
-    access(new URL("../public/robots.txt", import.meta.url)),
-    access(new URL("../public/sitemap.xml", import.meta.url)),
     access(new URL("../public/og-v2.png", import.meta.url)),
   ]);
 });
