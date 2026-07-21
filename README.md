@@ -35,3 +35,7 @@ npx netlify deploy --prod
 
 The regular `npm run build` command remains available for the Vinext/Cloudflare
 deployment target.
+
+The public language routes are `/en` and `/ar`. Each route is server-rendered
+with localized metadata, a self-referencing canonical URL, and reciprocal
+`hreflang` alternates; `/` permanently redirects to `/en`.

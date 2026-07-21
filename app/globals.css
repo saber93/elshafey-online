@@ -225,7 +225,9 @@ html[lang="ar"] .footer-brand {
   background: rgba(247, 243, 234, 0.16);
 }
 
-.language-switcher button {
+.language-switcher a {
+  display: grid;
+  place-items: center;
   min-width: 45px;
   min-height: 34px;
   padding: 5px 11px;
@@ -233,13 +235,12 @@ html[lang="ar"] .footer-brand {
   border-radius: 999px;
   background: transparent;
   color: rgba(247, 243, 234, 0.66);
-  cursor: pointer;
   font-size: 12px;
   font-weight: 750;
   transition: background 180ms ease, color 180ms ease;
 }
 
-.language-switcher button.active {
+.language-switcher a.active {
   background: var(--gold-400);
   color: var(--navy-950);
 }

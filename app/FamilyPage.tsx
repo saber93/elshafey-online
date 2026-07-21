@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-type Language = "en" | "ar";
+import type { Language } from "./i18n";
 
 type Member = {
   id: string;
@@ -39,7 +38,6 @@ const content = {
     imageAlt: (name: string, title: string) =>
       `Portrait placeholder for ${name}, ${title}`,
     footer: `© ${new Date().getFullYear()} El Shafey Family. All rights reserved.`,
-    switchStatus: "Language changed to English",
     skip: "Skip to main content",
   },
   ar: {
@@ -66,7 +64,6 @@ const content = {
     imageAlt: (name: string, title: string) =>
       `صورة بديلة لـ ${name}، ${title}`,
     footer: `© ${new Date().getFullYear()} عائلة الشافعي. جميع الحقوق محفوظة.`,
-    switchStatus: "تم تغيير اللغة إلى العربية",
     skip: "انتقل إلى المحتوى الرئيسي",
   },
 };
@@ -158,55 +155,9 @@ const members: Member[] = [
   },
 ];
 
-const metadataByLanguage = {
-  en: {
-    title: "El Shafey Family | Professional Consultants",
-    description:
-      "Meet the El Shafey family and discover expertise in religious leadership, spinning and weaving, international law, HVAC consulting, UX design and research, and digital marketing.",
-  },
-  ar: {
-    title: "عائلة الشافعي | خبرات استشارية متنوعة",
-    description:
-      "تعرّف على عائلة الشافعي وخبراتها في الإمامة والخطابة، والغزل والنسيج، والاستشارات القانونية الدولية، وأنظمة التكييف والتهوية، وتصميم وبحث تجربة المستخدم، والتسويق الرقمي.",
-  },
-};
-
-function updateMeta(language: Language) {
-  const metadata = metadataByLanguage[language];
-  document.title = metadata.title;
-  const selectors = [
-    ['meta[name="description"]', "content", metadata.description],
-    ['meta[property="og:title"]', "content", metadata.title],
-    ['meta[property="og:description"]', "content", metadata.description],
-    ['meta[name="twitter:title"]', "content", metadata.title],
-    ['meta[name="twitter:description"]', "content", metadata.description],
-  ];
-
-  selectors.forEach(([selector, attribute, value]) => {
-    document.querySelector(selector)?.setAttribute(attribute, value);
-  });
-}
-
-export function FamilyPage() {
-  const [language, setLanguage] = useState<Language>("en");
+export function FamilyPage({ language }: { language: Language }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [hasChosenLanguage, setHasChosenLanguage] = useState(false);
   const t = content[language];
-
-  useEffect(() => {
-    const storedLanguage = window.localStorage.getItem("el-shafey-language");
-    const initialLanguage: Language =
-      storedLanguage === "en" || storedLanguage === "ar"
-        ? storedLanguage
-        : navigator.language.toLowerCase().startsWith("ar")
-          ? "ar"
-          : "en";
-
-    setLanguage(initialLanguage);
-    document.documentElement.lang = initialLanguage;
-    document.documentElement.dir = initialLanguage === "ar" ? "rtl" : "ltr";
-    updateMeta(initialLanguage);
-  }, []);
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
@@ -216,14 +167,9 @@ export function FamilyPage() {
     return () => window.removeEventListener("keydown", closeOnEscape);
   }, []);
 
-  const selectLanguage = (nextLanguage: Language) => {
-    setLanguage(nextLanguage);
+  const rememberLanguage = (nextLanguage: Language) => {
     setMenuOpen(false);
-    setHasChosenLanguage(true);
     window.localStorage.setItem("el-shafey-language", nextLanguage);
-    document.documentElement.lang = nextLanguage;
-    document.documentElement.dir = nextLanguage === "ar" ? "rtl" : "ltr";
-    updateMeta(nextLanguage);
   };
 
   return (
@@ -269,25 +215,27 @@ export function FamilyPage() {
             </div>
 
             <div className="language-switcher" role="group" aria-label={t.languageLabel}>
-              <button
-                type="button"
+              <a
+                href="/en"
                 className={language === "en" ? "active" : ""}
-                aria-pressed={language === "en"}
+                aria-current={language === "en" ? "page" : undefined}
+                hrefLang="en"
                 lang="en"
-                onClick={() => selectLanguage("en")}
+                onClick={() => rememberLanguage("en")}
               >
                 EN
-              </button>
+              </a>
               <span aria-hidden="true" />
-              <button
-                type="button"
+              <a
+                href="/ar"
                 className={language === "ar" ? "active" : ""}
-                aria-pressed={language === "ar"}
+                aria-current={language === "ar" ? "page" : undefined}
+                hrefLang="ar"
                 lang="ar"
-                onClick={() => selectLanguage("ar")}
+                onClick={() => rememberLanguage("ar")}
               >
                 العربية
-              </button>
+              </a>
             </div>
           </nav>
         </div>
@@ -399,10 +347,6 @@ export function FamilyPage() {
           <p>{t.footer}</p>
         </div>
       </footer>
-
-      <p className="sr-only" role="status" aria-live="polite">
-        {hasChosenLanguage ? t.switchStatus : ""}
-      </p>
     </>
   );
 }
