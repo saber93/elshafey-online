@@ -2,18 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://elshafey-family.netlify.app/en</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://elshafey-family.netlify.app/en" />
-    <xhtml:link rel="alternate" hreflang="ar" href="https://elshafey-family.netlify.app/ar" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://elshafey-family.netlify.app/en" />
+    <loc>https://elshafey.online/en</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://elshafey.online/en" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://elshafey.online/ar" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://elshafey.online/en" />
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://elshafey-family.netlify.app/ar</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://elshafey-family.netlify.app/en" />
-    <xhtml:link rel="alternate" hreflang="ar" href="https://elshafey-family.netlify.app/ar" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://elshafey-family.netlify.app/en" />
+    <loc>https://elshafey.online/ar</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://elshafey.online/en" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://elshafey.online/ar" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://elshafey.online/en" />
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>

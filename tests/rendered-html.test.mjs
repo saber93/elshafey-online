@@ -45,9 +45,9 @@ test("server-renders the crawlable English page and localized SEO metadata", asy
     assert.match(html, new RegExp(name));
   }
 
-  assert.match(html, /rel="canonical"[^>]*href="https:\/\/elshafey-family\.netlify\.app\/en"/i);
-  assert.match(html, /hreflang="en"[^>]*href="https:\/\/elshafey-family\.netlify\.app\/en"/i);
-  assert.match(html, /hreflang="ar"[^>]*href="https:\/\/elshafey-family\.netlify\.app\/ar"/i);
+  assert.match(html, /rel="canonical"[^>]*href="https:\/\/elshafey\.online\/en"/i);
+  assert.match(html, /hreflang="en"[^>]*href="https:\/\/elshafey\.online\/en"/i);
+  assert.match(html, /hreflang="ar"[^>]*href="https:\/\/elshafey\.online\/ar"/i);
   assert.match(html, /hreflang="x-default"/i);
   assert.match(html, /property="og:image"/i);
   assert.match(html, /name="twitter:card"/i);
@@ -67,7 +67,7 @@ test("server-renders a distinct Arabic RTL page with its own canonical URL", asy
   assert.match(html, /<title>عائلة الشافعي \| خبرات استشارية متنوعة<\/title>/i);
   assert.match(html, /<h1[^>]*>خبرات مهنية عبر الأجيال<\/h1>/i);
   assert.match(html, /الشيخ صابر الشافعي/);
-  assert.match(html, /rel="canonical"[^>]*href="https:\/\/elshafey-family\.netlify\.app\/ar"/i);
+  assert.match(html, /rel="canonical"[^>]*href="https:\/\/elshafey\.online\/ar"/i);
   assert.match(html, /"inLanguage":"ar"/);
 });
 
@@ -99,8 +99,8 @@ test("keeps localized routing, accessibility, and replaceable assets in source",
   assert.match(languageLayout, /"@type": "ItemList"/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
   assert.match(css, /:focus-visible/);
-  assert.match(sitemap, /<loc>https:\/\/elshafey-family\.netlify\.app\/en<\/loc>/);
-  assert.match(sitemap, /<loc>https:\/\/elshafey-family\.netlify\.app\/ar<\/loc>/);
+  assert.match(sitemap, /<loc>https:\/\/elshafey\.online\/en<\/loc>/);
+  assert.match(sitemap, /<loc>https:\/\/elshafey\.online\/ar<\/loc>/);
   assert.match(sitemap, /hreflang="x-default"/);
 
   assert.deepEqual(imageFiles.sort(), [

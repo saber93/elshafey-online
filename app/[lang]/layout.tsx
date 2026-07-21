@@ -4,8 +4,7 @@ import type { ReactNode } from "react";
 import { isLanguage, languages, type Language } from "../i18n";
 import "../globals.css";
 
-// Update this value if a custom production domain replaces the Netlify URL.
-const siteUrl = "https://elshafey-family.netlify.app";
+const siteUrl = "https://elshafey.online";
 
 const localizedMetadata = {
   en: {

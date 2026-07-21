@@ -20,8 +20,9 @@ checks.
 - Replace the six files in `public/images/` with real portraits while keeping
   the same filenames and 4:5 aspect ratio.
 - Edit bilingual interface and profile copy in `app/FamilyPage.tsx`.
-- Replace the current Netlify URL in `app/layout.tsx`, `public/robots.txt`, and
-  `public/sitemap.xml` if the site moves to a custom production domain.
+- Update the production domain in `app/[lang]/layout.tsx`,
+  `app/(root)/layout.tsx`, `public/robots.txt`, and `public/sitemap.xml` if the
+  site moves away from `elshafey.online`.
 - Regenerate portrait placeholders with `python scripts/create-placeholders.py`.
 
 ## Netlify deployment

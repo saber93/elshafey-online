@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import "../globals.css";
 
-const siteUrl = "https://elshafey-family.netlify.app";
+const siteUrl = "https://elshafey.online";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
