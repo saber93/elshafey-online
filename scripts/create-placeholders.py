@@ -1,4 +1,4 @@
-"""Generate the five replaceable portrait placeholders used by the website."""
+"""Generate the six replaceable portrait placeholders used by the website."""
 
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
@@ -9,11 +9,12 @@ OUTPUT = ROOT / "public" / "images"
 WIDTH, HEIGHT = 800, 1000
 
 MEMBERS = [
-    ("samir-el-shafey.jpg", "SE", "01"),
-    ("faraj-el-shafey.jpg", "FE", "02"),
-    ("wesam-el-shafey.jpg", "WE", "03"),
-    ("saber-el-shafey.jpg", "SE", "04"),
-    ("farid-el-shafey.jpg", "FE", "05"),
+    ("sheikh-saber-el-shafey.jpg", "SS", "01"),
+    ("samir-el-shafey.jpg", "SE", "02"),
+    ("faraj-el-shafey.jpg", "FE", "03"),
+    ("wesam-el-shafey.jpg", "WE", "04"),
+    ("saber-el-shafey.jpg", "SE", "05"),
+    ("farid-el-shafey.jpg", "FE", "06"),
 ]
 
 

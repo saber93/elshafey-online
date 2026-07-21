@@ -34,6 +34,7 @@ test("server-renders the complete family profile and SEO metadata", async () => 
   assert.match(html, /Professional Expertise Across Generations/);
 
   for (const name of [
+    "Sheikh Saber El Shafey",
     "Samir El Shafey",
     "Faraj El Shafey",
     "Wesam El Shafey",
@@ -49,6 +50,7 @@ test("server-renders the complete family profile and SEO metadata", async () => 
   assert.match(html, /type="application\/ld\+json"/i);
   assert.match(html, /"@type":"ProfilePage"/);
   assert.match(html, /"@type":"ItemList"/);
+  assert.match(html, /"numberOfItems":6/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape/i);
 });
 
@@ -77,12 +79,13 @@ test("keeps bilingual, accessible, and replaceable assets in the product source"
     "farid-el-shafey.jpg",
     "saber-el-shafey.jpg",
     "samir-el-shafey.jpg",
+    "sheikh-saber-el-shafey.jpg",
     "wesam-el-shafey.jpg",
   ]);
 
   await Promise.all([
     access(new URL("../public/robots.txt", import.meta.url)),
     access(new URL("../public/sitemap.xml", import.meta.url)),
-    access(new URL("../public/og.png", import.meta.url)),
+    access(new URL("../public/og-v2.png", import.meta.url)),
   ]);
 });

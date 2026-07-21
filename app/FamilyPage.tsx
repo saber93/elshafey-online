@@ -26,16 +26,16 @@ const content = {
     eyebrow: "A family of professionals",
     heroTitle: "Professional Expertise Across Generations",
     heroIntro:
-      "Meet the El Shafey family, a family of experienced professionals providing specialized knowledge across industry, law, engineering, user experience, and digital marketing.",
+      "Meet the El Shafey family, a family of experienced professionals with specialized knowledge across religious leadership, industry, law, engineering, user experience, and digital marketing.",
     heroButton: "Meet the Family",
     spectrumLabel: "Our areas of expertise",
     spectrumCenter: "One family",
-    spectrumCenterSmall: "Five perspectives",
-    specialties: ["Textiles", "Law", "HVAC", "UX", "Digital"],
+    spectrumCenterSmall: "Six perspectives",
+    specialties: ["Imamate", "Textiles", "Law", "HVAC", "UX", "Digital"],
     sectionEyebrow: "Meet the family",
-    sectionTitle: "Five perspectives. One family.",
+    sectionTitle: "Six perspectives. One family.",
     sectionIntro:
-      "Explore professional focus across five distinct disciplines, brought together by a shared family name.",
+      "Explore six distinct areas of professional and religious service, brought together by a shared family name.",
     imageAlt: (name: string, title: string) =>
       `Portrait placeholder for ${name}, ${title}`,
     footer: `© ${new Date().getFullYear()} El Shafey Family. All rights reserved.`,
@@ -53,16 +53,16 @@ const content = {
     eyebrow: "عائلة من المهنيين",
     heroTitle: "خبرات مهنية عبر الأجيال",
     heroIntro:
-      "تعرّف على عائلة الشافعي، وهي عائلة تضم نخبة من أصحاب الخبرات المهنية المتخصصة في الصناعة والقانون والهندسة وتجربة المستخدم والتسويق الرقمي.",
+      "تعرّف على عائلة الشافعي، وهي عائلة تضم نخبة من أصحاب الخبرات في الإمامة والخطابة والصناعة والقانون والهندسة وتجربة المستخدم والتسويق الرقمي.",
     heroButton: "تعرّف على العائلة",
     spectrumLabel: "مجالات خبراتنا",
     spectrumCenter: "عائلة واحدة",
-    spectrumCenterSmall: "خمس رؤى مهنية",
-    specialties: ["النسيج", "القانون", "التكييف", "تجربة المستخدم", "التسويق"],
+    spectrumCenterSmall: "ست رؤى مهنية",
+    specialties: ["الإمامة", "النسيج", "القانون", "التكييف", "تجربة المستخدم", "التسويق"],
     sectionEyebrow: "تعرّف على العائلة",
-    sectionTitle: "خمس رؤى مهنية. عائلة واحدة.",
+    sectionTitle: "ست رؤى مهنية. عائلة واحدة.",
     sectionIntro:
-      "اكتشف مجالات التركيز المهني في خمسة تخصصات متنوعة، يجمع بينها اسم عائلة واحد.",
+      "اكتشف ستة مجالات متنوعة من الخبرة المهنية والخدمة الدينية، يجمع بينها اسم عائلة واحد.",
     imageAlt: (name: string, title: string) =>
       `صورة بديلة لـ ${name}، ${title}`,
     footer: `© ${new Date().getFullYear()} عائلة الشافعي. جميع الحقوق محفوظة.`,
@@ -72,6 +72,21 @@ const content = {
 };
 
 const members: Member[] = [
+  {
+    id: "sheikh-saber",
+    initials: "SS",
+    image: "/images/sheikh-saber-el-shafey.jpg",
+    name: { en: "Sheikh Saber El Shafey", ar: "الشيخ صابر الشافعي" },
+    relationship: { en: "Grandfather", ar: "الجد" },
+    title: {
+      en: "Imam and Preacher, Al-Azhar University Graduate",
+      ar: "إمام وخطيب، خريج جامعة الأزهر الشريف",
+    },
+    description: {
+      en: "An imam and preacher and a graduate of Al-Azhar University.",
+      ar: "إمام وخطيب وخريج جامعة الأزهر الشريف.",
+    },
+  },
   {
     id: "samir",
     initials: "SE",
@@ -147,12 +162,12 @@ const metadataByLanguage = {
   en: {
     title: "El Shafey Family | Professional Consultants",
     description:
-      "Meet the El Shafey family and discover professional expertise in spinning and weaving, international law, HVAC consulting, UX design and research, and digital marketing.",
+      "Meet the El Shafey family and discover expertise in religious leadership, spinning and weaving, international law, HVAC consulting, UX design and research, and digital marketing.",
   },
   ar: {
     title: "عائلة الشافعي | خبرات استشارية متنوعة",
     description:
-      "تعرّف على عائلة الشافعي وخبراتها المهنية في الغزل والنسيج، والاستشارات القانونية الدولية، وأنظمة التكييف والتهوية، وتصميم وبحث تجربة المستخدم، والتسويق الرقمي.",
+      "تعرّف على عائلة الشافعي وخبراتها في الإمامة والخطابة، والغزل والنسيج، والاستشارات القانونية الدولية، وأنظمة التكييف والتهوية، وتصميم وبحث تجربة المستخدم، والتسويق الرقمي.",
   },
 };
 
@@ -318,7 +333,7 @@ export function FamilyPage() {
                 <div className="visual-index" aria-hidden="true">
                   <span>01</span>
                   <span className="visual-line" />
-                  <span>05</span>
+                  <span>06</span>
                 </div>
               </div>
             </div>

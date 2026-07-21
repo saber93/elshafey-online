@@ -17,7 +17,7 @@ checks.
 
 ## Content updates
 
-- Replace the five files in `public/images/` with real portraits while keeping
+- Replace the six files in `public/images/` with real portraits while keeping
   the same filenames and 4:5 aspect ratio.
 - Edit bilingual interface and profile copy in `app/FamilyPage.tsx`.
 - Replace the clearly marked `https://example.com` placeholder in

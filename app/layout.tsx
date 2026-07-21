@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "El Shafey Family | Professional Consultants",
   description:
-    "Meet the El Shafey family and discover professional expertise in spinning and weaving, international law, HVAC consulting, UX design and research, and digital marketing.",
+    "Meet the El Shafey family and discover expertise in religious leadership, spinning and weaving, international law, HVAC consulting, UX design and research, and digital marketing.",
   alternates: { canonical: "/" },
   robots: {
     index: true,
@@ -27,12 +27,12 @@ export const metadata: Metadata = {
     siteName: "El Shafey Family | عائلة الشافعي",
     title: "El Shafey Family | Professional Consultants",
     description:
-      "Professional expertise across spinning and weaving, international law, HVAC, UX design and research, and digital marketing.",
+      "Expertise across religious leadership, spinning and weaving, international law, HVAC, UX design and research, and digital marketing.",
     locale: "en_US",
     alternateLocale: "ar_AR",
     images: [
       {
-        url: "/og.png",
+        url: "/og-v2.png",
         width: 1200,
         height: 630,
         alt: "El Shafey Family — Professional Expertise Across Generations",
@@ -43,8 +43,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "El Shafey Family | Professional Consultants",
     description:
-      "Professional expertise across five disciplines, united by one family.",
-    images: ["/og.png"],
+      "Professional and religious expertise across six disciplines, united by one family.",
+    images: ["/og-v2.png"],
   },
   icons: {
     icon: "/favicon.svg",
@@ -62,7 +62,7 @@ const structuredData = {
       name: "El Shafey Family | عائلة الشافعي",
       headline: "Professional Expertise Across Generations | خبرات مهنية عبر الأجيال",
       description:
-        "A bilingual family profile presenting expertise in textiles, international law, HVAC, UX design and research, and digital marketing. صفحة تعريفية ثنائية اللغة تعرض خبرات عائلة الشافعي المهنية.",
+        "A bilingual family profile presenting expertise in religious leadership, textiles, international law, HVAC, UX design and research, and digital marketing. صفحة تعريفية ثنائية اللغة تعرض خبرات عائلة الشافعي في الإمامة والخطابة ومجالات مهنية متنوعة.",
       mainEntity: { "@id": `${siteUrl}/#family-members` },
       inLanguage: ["en", "ar"],
     },
@@ -70,11 +70,26 @@ const structuredData = {
       "@type": "ItemList",
       "@id": `${siteUrl}/#family-members`,
       name: "El Shafey Family Members | أفراد عائلة الشافعي",
-      numberOfItems: 5,
+      numberOfItems: 6,
       itemListElement: [
         {
           "@type": "ListItem",
           position: 1,
+          item: {
+            "@type": "Person",
+            name: "Sheikh Saber El Shafey",
+            alternateName: "الشيخ صابر الشافعي",
+            jobTitle: [
+              "Imam and Preacher, Al-Azhar University Graduate",
+              "إمام وخطيب، خريج جامعة الأزهر الشريف",
+            ],
+            description:
+              "An imam and preacher and a graduate of Al-Azhar University. إمام وخطيب وخريج جامعة الأزهر الشريف.",
+          },
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
           item: {
             "@type": "Person",
             name: "Samir El Shafey",
@@ -86,7 +101,7 @@ const structuredData = {
         },
         {
           "@type": "ListItem",
-          position: 2,
+          position: 3,
           item: {
             "@type": "Person",
             name: "Faraj El Shafey",
@@ -98,7 +113,7 @@ const structuredData = {
         },
         {
           "@type": "ListItem",
-          position: 3,
+          position: 4,
           item: {
             "@type": "Person",
             name: "Wesam El Shafey",
@@ -113,7 +128,7 @@ const structuredData = {
         },
         {
           "@type": "ListItem",
-          position: 4,
+          position: 5,
           item: {
             "@type": "Person",
             name: "Saber El Shafey",
@@ -128,7 +143,7 @@ const structuredData = {
         },
         {
           "@type": "ListItem",
-          position: 5,
+          position: 6,
           item: {
             "@type": "Person",
             name: "Farid El Shafey",

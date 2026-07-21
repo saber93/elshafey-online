@@ -570,11 +570,12 @@ html[lang="ar"] .specialty {
   background: var(--gold-400);
 }
 
-.specialty-1 { inset: 4% auto auto 43%; }
-.specialty-2 { inset: 29% 0 auto auto; }
-.specialty-3 { inset: auto 11% 9% auto; }
-.specialty-4 { inset: auto auto 9% 8%; }
-.specialty-5 { inset: 31% auto auto 0; }
+.specialty-1 { inset: 2% auto auto 50%; transform: translateX(-50%); }
+.specialty-2 { inset: 28% -2% auto auto; }
+.specialty-3 { inset: auto -3% 18% auto; }
+.specialty-4 { inset: auto auto 3% 50%; transform: translateX(-50%); }
+.specialty-5 { inset: auto auto 18% -3%; }
+.specialty-6 { inset: 28% auto auto -2%; }
 
 .visual-index {
   position: absolute;
@@ -675,14 +676,6 @@ html[lang="ar"] .section-heading h2 {
   transition: border-color 240ms ease, box-shadow 240ms ease, transform 240ms ease;
   animation: card-rise 680ms cubic-bezier(0.22, 1, 0.36, 1) both;
   animation-delay: calc(var(--card-index, 0) * 70ms);
-}
-
-.member-card:nth-child(4) {
-  grid-column: 2 / span 2;
-}
-
-.member-card:nth-child(5) {
-  grid-column: 4 / span 2;
 }
 
 .member-card:hover {
@@ -914,16 +907,8 @@ html[lang="ar"] .member-card h3 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .member-card,
-  .member-card:nth-child(4),
-  .member-card:nth-child(5) {
+  .member-card {
     grid-column: auto;
-  }
-
-  .member-card:last-child {
-    grid-column: 1 / -1;
-    width: calc(50% - 13px);
-    justify-self: center;
   }
 }
 
@@ -1124,11 +1109,6 @@ html[lang="ar"] .member-card h3 {
   .member-grid {
     grid-template-columns: 1fr;
     gap: 22px;
-  }
-
-  .member-card:last-child {
-    grid-column: auto;
-    width: auto;
   }
 
   .member-content {
