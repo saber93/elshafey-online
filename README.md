@@ -1,42 +1,66 @@
 # El Shafey Family
 
-A polished one-page bilingual profile for the El Shafey family, built with
-vinext, React, semantic HTML, and lightweight CSS.
+A bilingual family directory built with the Next.js App Router and deployed on
+Netlify. The two canonical owners are `/en` and `/ar`; `/` permanently redirects
+to `/en`.
 
-## Local development
+## Runtime
 
-Requires Node.js 22.13 or newer.
+- Node.js `22.23.1`
+- npm `10.9.2`
+- `package-lock.json` is the only dependency lock
+
+Use the pinned runtime before installing dependencies:
 
 ```bash
-npm install
-npm run dev
+nvm use
+npm ci
 ```
 
-Use `npm run build` for a production build and `npm test` for rendered-content
+## Local development and validation
+
+```bash
+npm run dev
+npm run lint
+npm run typecheck
+npm test
+npm run seo:check
+npm run security:scan
+npm audit --omit=dev
+```
+
+Run `npm run test:e2e` after `npm run build` and after installing the pinned
+Playwright Chromium runtime. The browser suite covers desktop plus `360×800`,
+`390×844`, and `412×915` with axe, keyboard, console, hydration, and screenshot
 checks.
 
-## Content updates
+## Content and SEO contract
 
-- Replace the six files in `public/images/` with real portraits while keeping
-  the same filenames and 4:5 aspect ratio.
-- Edit bilingual interface and profile copy in `app/FamilyPage.tsx`.
-- Update the production domain in `app/[lang]/layout.tsx`,
-  `app/(root)/layout.tsx`, `public/robots.txt`, and `public/sitemap.xml` if the
-  site moves away from `elshafey.online`.
-- Regenerate portrait placeholders with `python scripts/create-placeholders.py`.
+All visible bilingual content, member order, approved member facts, metadata,
+canonical routes, sitemap ownership, schema eligibility, and evidence references
+live in `app/family-registry.ts`.
 
-## Netlify deployment
+- Keep member facts limited to approved names and broad fields.
+- Only Saber has an approved portrait and Person image field.
+- The other five visual cards use truthful initials and emit no image field.
+- Structured data is limited to `WebSite`, `CollectionPage`, `ItemList`, and the
+  visible approved `Person` facts.
+- Unknown routes are intercepted by the Next proxy and return a useful bilingual
+  `404`, `noindex, follow`, no canonical, and links to both locale owners.
+- Deploy Preview and branch contexts receive page metadata and response-header
+  `noindex, nofollow`; canonical metadata always uses `https://elshafey.online`.
 
-Netlify uses the native Next.js build configured in `netlify.toml`:
+## Deployment boundaries
 
-```bash
-npm run build:netlify
-npx netlify deploy --prod
-```
+Netlify builds the native Next.js project from Git. Review changes through the
+GitHub-triggered Deploy Preview; do not publish with a production-context CLI
+command.
 
-The regular `npm run build` command remains available for the Vinext/Cloudflare
-deployment target.
+The existing `.openai/hosting.json` is protected by an automated SHA-256 check
+and remains unchanged. `build:sites`, `dev:sites`, and `start:sites` remain as
+separate compatibility commands, but the Sites hosting workflow is not part of
+this remediation.
 
-The public language routes are `/en` and `/ar`. Each route is server-rendered
-with localized metadata, a self-referencing canonical URL, and reciprocal
-`hreflang` alternates; `/` permanently redirects to `/en`.
+See `docs/` for the sanitized baseline, remediation report, route/schema
+contract, media provenance, and owner review checklist. Raw evidence stays in
+the private governance repository.

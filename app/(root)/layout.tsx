@@ -1,18 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
+import { familyRegistry } from "../family-registry";
 import "../globals.css";
 
-const siteUrl = "https://elshafey.online";
-
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
-  title: "El Shafey Family | Professional Consultants",
-  description:
-    "Meet the El Shafey family and discover professional expertise across generations.",
-  alternates: {
-    canonical: "/en",
-    languages: { en: "/en", ar: "/ar", "x-default": "/en" },
-  },
+  title: familyRegistry.locales.en.metadata.title,
+  description: familyRegistry.locales.en.metadata.description,
   robots: { index: false, follow: true },
 };
 

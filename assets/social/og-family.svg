@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">El Shafey Family directory</title>
+  <desc id="description">Six approved names and six broad fields</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071725"/>
+      <stop offset="1" stop-color="#12304d"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.2" cy="0.8" r="0.8">
+      <stop offset="0" stop-color="#dbb66f" stop-opacity="0.2"/>
+      <stop offset="1" stop-color="#dbb66f" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#background)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <rect x="28" y="28" width="1144" height="574" rx="24" fill="none" stroke="#dbb66f" stroke-opacity="0.7" stroke-width="2"/>
+  <g fill="none" stroke="#f7f3ea" stroke-opacity="0.07">
+    <path d="M0 126h1200M0 252h1200M0 378h1200M0 504h1200"/>
+    <path d="M200 0v630M400 0v630M600 0v630M800 0v630M1000 0v630"/>
+  </g>
+  <g transform="translate(78 88)">
+    <circle cx="54" cy="54" r="52" fill="none" stroke="#dbb66f" stroke-width="2"/>
+    <text x="54" y="69" fill="#dbb66f" font-family="Georgia, serif" font-size="42" font-weight="700" text-anchor="middle">ES</text>
+    <text x="0" y="190" fill="#f7f3ea" font-family="Georgia, serif" font-size="76" font-weight="600" letter-spacing="-2">EL SHAFEY</text>
+    <text x="0" y="272" fill="#f7f3ea" font-family="Georgia, serif" font-size="76" font-weight="600" letter-spacing="-2">FAMILY</text>
+    <line x1="0" y1="314" x2="474" y2="314" stroke="#dbb66f" stroke-width="2"/>
+    <text x="0" y="364" fill="#dbb66f" font-family="Arial, sans-serif" font-size="24" font-weight="700" letter-spacing="4">BILINGUAL DIRECTORY</text>
+    <text x="0" y="405" fill="#f7f3ea" fill-opacity="0.7" font-family="Arial, sans-serif" font-size="21">Six approved names · Six broad fields</text>
+  </g>
+  <g transform="translate(690 116)" font-family="Arial, sans-serif" text-anchor="middle">
+    <g transform="translate(0 0)">
+      <circle cx="75" cy="75" r="74" fill="#0b1f33" stroke="#dbb66f" stroke-opacity="0.75"/>
+      <text x="75" y="70" fill="#dbb66f" font-size="30" font-weight="700">SS</text>
+      <text x="75" y="100" fill="#f7f3ea" fill-opacity="0.75" font-size="13">RELIGIOUS SERVICE</text>
+    </g>
+    <g transform="translate(160 0)">
+      <circle cx="75" cy="75" r="74" fill="#0b1f33" stroke="#dbb66f" stroke-opacity="0.75"/>
+      <text x="75" y="70" fill="#dbb66f" font-size="30" font-weight="700">SE</text>
+      <text x="75" y="100" fill="#f7f3ea" fill-opacity="0.75" font-size="13">TEXTILES</text>
+    </g>
+    <g transform="translate(320 0)">
+      <circle cx="75" cy="75" r="74" fill="#0b1f33" stroke="#dbb66f" stroke-opacity="0.75"/>
+      <text x="75" y="70" fill="#dbb66f" font-size="30" font-weight="700">FE</text>
+      <text x="75" y="100" fill="#f7f3ea" fill-opacity="0.75" font-size="13">LAW</text>
+    </g>
+    <g transform="translate(0 185)">
+      <circle cx="75" cy="75" r="74" fill="#0b1f33" stroke="#dbb66f" stroke-opacity="0.75"/>
+      <text x="75" y="70" fill="#dbb66f" font-size="30" font-weight="700">WE</text>
+      <text x="75" y="100" fill="#f7f3ea" fill-opacity="0.75" font-size="13">HVAC</text>
+    </g>
+    <g transform="translate(160 185)">
+      <circle cx="75" cy="75" r="74" fill="#0b1f33" stroke="#dbb66f" stroke-opacity="0.75"/>
+      <text x="75" y="70" fill="#dbb66f" font-size="30" font-weight="700">SE</text>
+      <text x="75" y="100" fill="#f7f3ea" fill-opacity="0.75" font-size="13">UX</text>
+    </g>
+    <g transform="translate(320 185)">
+      <circle cx="75" cy="75" r="74" fill="#0b1f33" stroke="#dbb66f" stroke-opacity="0.75"/>
+      <text x="75" y="70" fill="#dbb66f" font-size="30" font-weight="700">FE</text>
+      <text x="75" y="100" fill="#f7f3ea" fill-opacity="0.75" font-size="11">DIGITAL MARKETING</text>
+    </g>
+  </g>
+</svg>
