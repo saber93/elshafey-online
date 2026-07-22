@@ -1,16 +1,15 @@
 import type { MetadataRoute } from "next";
-
-const siteUrl = "https://elshafey.online";
+import { routeRegistry, SITE_URL } from "./family-registry";
 
 const languageAlternates = {
-  en: `${siteUrl}/en`,
-  ar: `${siteUrl}/ar`,
-  "x-default": `${siteUrl}/en`,
+  en: `${SITE_URL}/en`,
+  ar: `${SITE_URL}/ar`,
+  "x-default": `${SITE_URL}/en`,
 };
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return (["en", "ar"] as const).map((language) => ({
-    url: `${siteUrl}/${language}`,
+  return routeRegistry.map((route) => ({
+    url: route.canonical,
     changeFrequency: "monthly",
     priority: 1,
     alternates: {

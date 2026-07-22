@@ -1,121 +1,178 @@
 import assert from "node:assert/strict";
-import { access, readFile, readdir } from "node:fs/promises";
-import test from "node:test";
+import { spawn } from "node:child_process";
+import { createServer } from "node:net";
+import { after, before, test } from "node:test";
 
-async function render(pathname = "/en") {
-  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
-  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}-${pathname}`);
-  const { default: worker } = await import(workerUrl.href);
+const repositoryRoot = new URL("../", import.meta.url);
+let origin;
+let serverProcess;
+let serverOutput = "";
 
-  return worker.fetch(
-    new Request(`http://localhost${pathname}`, {
-      headers: { accept: "text/html" },
-    }),
-    {
-      ASSETS: {
-        fetch: async () => new Response("Not found", { status: 404 }),
-      },
-    },
-    {
-      waitUntil() {},
-      passThroughOnException() {},
-    },
-  );
+async function availablePort() {
+  return new Promise((resolve, reject) => {
+    const server = createServer();
+    server.once("error", reject);
+    server.listen(0, "127.0.0.1", () => {
+      const address = server.address();
+      const port = typeof address === "object" && address ? address.port : null;
+      server.close((error) => (error ? reject(error) : resolve(port)));
+    });
+  });
 }
 
-test("server-renders the crawlable English page and localized SEO metadata", async () => {
-  const response = await render("/en");
-  assert.equal(response.status, 200);
-  assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
-
-  const html = await response.text();
-  assert.match(html, /<html[^>]*lang="en"[^>]*dir="ltr"/i);
-  assert.match(html, /<title>El Shafey Family \| Professional Consultants<\/title>/i);
-  assert.equal((html.match(/<h1[ >]/gi) ?? []).length, 1);
-  assert.match(html, /Professional Expertise Across Generations/);
-
-  for (const name of [
-    "Sheikh Saber El Shafey",
-    "Samir El Shafey",
-    "Faraj El Shafey",
-    "Wesam El Shafey",
-    "Saber El Shafey",
-    "Farid El Shafey",
-  ]) {
-    assert.match(html, new RegExp(name));
+async function waitForServer(url) {
+  const deadline = Date.now() + 30_000;
+  while (Date.now() < deadline) {
+    try {
+      const response = await fetch(`${url}/en`);
+      if (response.ok) return;
+    } catch {
+      // The server is still starting.
+    }
+    await new Promise((resolve) => setTimeout(resolve, 200));
   }
+  throw new Error(`Next server did not start.\n${serverOutput}`);
+}
 
-  assert.match(html, /rel="canonical"[^>]*href="https:\/\/elshafey\.online\/en"/i);
-  assert.match(html, /hreflang="en"[^>]*href="https:\/\/elshafey\.online\/en"/i);
-  assert.match(html, /hreflang="ar"[^>]*href="https:\/\/elshafey\.online\/ar"/i);
-  assert.match(html, /hreflang="x-default"/i);
-  assert.match(html, /property="og:image"/i);
-  assert.match(html, /name="twitter:card"/i);
-  assert.match(html, /type="application\/ld\+json"/i);
-  assert.match(html, /"@type":"ProfilePage"/);
-  assert.match(html, /"@type":"ItemList"/);
-  assert.match(html, /"numberOfItems":6/);
-  assert.doesNotMatch(html, /codex-preview|Your site is taking shape/i);
+before(async () => {
+  const port = await availablePort();
+  origin = `http://127.0.0.1:${port}`;
+  serverProcess = spawn(
+    process.execPath,
+    ["node_modules/next/dist/bin/next", "start", "-H", "127.0.0.1", "-p", String(port)],
+    {
+      cwd: repositoryRoot,
+      env: { ...process.env, NODE_ENV: "production" },
+      stdio: ["ignore", "pipe", "pipe"],
+    },
+  );
+  serverProcess.stdout.on("data", (chunk) => {
+    serverOutput += chunk.toString();
+  });
+  serverProcess.stderr.on("data", (chunk) => {
+    serverOutput += chunk.toString();
+  });
+  await waitForServer(origin);
 });
 
-test("server-renders a distinct Arabic RTL page with its own canonical URL", async () => {
-  const response = await render("/ar");
-  assert.equal(response.status, 200);
-
-  const html = await response.text();
-  assert.match(html, /<html[^>]*lang="ar"[^>]*dir="rtl"/i);
-  assert.match(html, /<title>عائلة الشافعي \| خبرات استشارية متنوعة<\/title>/i);
-  assert.match(html, /<h1[^>]*>خبرات مهنية عبر الأجيال<\/h1>/i);
-  assert.match(html, /الشيخ صابر الشافعي/);
-  assert.match(html, /rel="canonical"[^>]*href="https:\/\/elshafey\.online\/ar"/i);
-  assert.match(html, /"inLanguage":"ar"/);
+after(async () => {
+  if (!serverProcess || serverProcess.exitCode !== null) return;
+  serverProcess.kill("SIGTERM");
+  await Promise.race([
+    new Promise((resolve) => serverProcess.once("exit", resolve)),
+    new Promise((resolve) => setTimeout(resolve, 2_000)),
+  ]);
 });
 
-test("permanently redirects the unlocalized root to the English URL", async () => {
-  const response = await render("/");
+test("root permanently redirects to the English owner", async () => {
+  const response = await fetch(`${origin}/`, { redirect: "manual" });
   assert.equal(response.status, 308);
-  assert.match(response.headers.get("location") ?? "", /\/en$/);
+  assert.equal(new URL(response.headers.get("location"), origin).pathname, "/en");
 });
 
-test("keeps localized routing, crawl directives, accessibility, and replaceable assets in source", async () => {
-  const [familyPage, languageLayout, css, sitemap, robots, imageFiles] = await Promise.all([
-    readFile(new URL("../app/FamilyPage.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/[lang]/layout.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
-    readFile(new URL("../app/sitemap.ts", import.meta.url), "utf8"),
-    readFile(new URL("../app/robots.ts", import.meta.url), "utf8"),
-    readdir(new URL("../public/images/", import.meta.url)),
-  ]);
+test("English and Arabic owners render localized crawlable HTML", async () => {
+  for (const expectation of [
+    {
+      path: "/en",
+      lang: "en",
+      dir: "ltr",
+      title: "El Shafey Family | Family Directory",
+      h1: "Six Fields, One Family",
+    },
+    {
+      path: "/ar",
+      lang: "ar",
+      dir: "rtl",
+      title: "عائلة الشافعي | دليل العائلة",
+      h1: "ستة مجالات، عائلة واحدة",
+    },
+  ]) {
+    const response = await fetch(`${origin}${expectation.path}`);
+    assert.equal(response.status, 200);
+    const html = await response.text();
 
-  assert.match(familyPage, /href="\/en"/);
-  assert.match(familyPage, /href="\/ar"/);
-  assert.match(familyPage, /hrefLang="en"/);
-  assert.match(familyPage, /hrefLang="ar"/);
-  assert.match(familyPage, /localStorage/);
-  assert.match(familyPage, /aria-expanded/);
-  assert.match(familyPage, /سمير الشافعي/);
-  assert.match(languageLayout, /dynamicParams = false/);
-  assert.match(languageLayout, /"x-default": "\/en"/);
-  assert.match(languageLayout, /"@type": "ProfilePage"/);
-  assert.match(languageLayout, /"@type": "ItemList"/);
-  assert.match(css, /prefers-reduced-motion:\s*reduce/);
-  assert.match(css, /:focus-visible/);
-  assert.match(sitemap, /\["en", "ar"\]/);
-  assert.match(sitemap, /"x-default"/);
-  assert.match(sitemap, /alternates/);
-  assert.match(robots, /allow: "\/"/);
-  assert.match(robots, /https:\/\/elshafey\.online\/sitemap\.xml/);
+    assert.match(html, new RegExp(`<html[^>]*lang="${expectation.lang}"[^>]*dir="${expectation.dir}"`, "i"));
+    assert.match(html, new RegExp(`<title>${expectation.title.replace(/[|]/g, "\\|")}</title>`));
+    assert.match(html, new RegExp(`<h1[^>]*>${expectation.h1}</h1>`));
+    assert.match(html, new RegExp(`rel="canonical"[^>]*href="https://elshafey\\.online${expectation.path}"`, "i"));
+    assert.match(html, /hrefLang="en"[^>]*href="https:\/\/elshafey\.online\/en"/i);
+    assert.match(html, /hrefLang="ar"[^>]*href="https:\/\/elshafey\.online\/ar"/i);
+    assert.match(html, /hrefLang="x-default"[^>]*href="https:\/\/elshafey\.online\/en"/i);
+    assert.doesNotMatch(html, /property="og:locale"/i);
+    assert.doesNotMatch(html, /ProfilePage/);
+    assert.match(html, /"@type":"WebSite"/);
+    assert.match(html, /"@type":"CollectionPage"/);
+    assert.match(html, /"@type":"ItemList"/);
+    assert.equal((html.match(/"@type":"Person"/g) ?? []).length, 6);
+    assert.equal((html.match(/"image":"https:\/\/elshafey\.online\/images\/saber-el-shafey-e656975a\.png"/g) ?? []).length, 1);
+    assert.equal((html.match(/class="member-portrait"/g) ?? []).length, 1);
+    assert.doesNotMatch(
+      html,
+      /Google-Certified|Al-Azhar University|Grandfather|Elder Brother|Younger Brother|Consultant|Advisor|معتمد من Google|جامعة الأزهر|الجد|الأخ الأكبر|الأخ الأصغر|مستشار/i,
+    );
+  }
+});
 
-  assert.deepEqual(imageFiles.sort(), [
-    "faraj-el-shafey.jpg",
-    "farid-el-shafey.jpg",
-    "saber-el-shafey.jpg",
-    "samir-el-shafey.jpg",
-    "sheikh-saber-el-shafey.jpg",
-    "wesam-el-shafey.jpg",
+test("sitemap and robots expose only the two production owners", async () => {
+  const [sitemapResponse, robotsResponse] = await Promise.all([
+    fetch(`${origin}/sitemap.xml`),
+    fetch(`${origin}/robots.txt`),
   ]);
+  assert.equal(sitemapResponse.status, 200);
+  assert.equal(robotsResponse.status, 200);
 
-  await Promise.all([
-    access(new URL("../public/og-v2.png", import.meta.url)),
-  ]);
+  const sitemap = await sitemapResponse.text();
+  const robots = await robotsResponse.text();
+  assert.equal((sitemap.match(/<url>/g) ?? []).length, 2);
+  assert.deepEqual(
+    [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]),
+    ["https://elshafey.online/en", "https://elshafey.online/ar"],
+  );
+  assert.match(sitemap, /hreflang="x-default"/);
+  assert.match(robots, /Allow: \//);
+  assert.match(robots, /Sitemap: https:\/\/elshafey\.online\/sitemap\.xml/);
+});
+
+test("unknown routes return the useful bilingual 404 without a canonical", async () => {
+  const response = await fetch(`${origin}/not-a-real-family-page`, {
+    redirect: "manual",
+  });
+  assert.equal(response.status, 404);
+  assert.equal(response.headers.get("x-frame-options"), "DENY");
+  assert.equal(response.headers.get("x-content-type-options"), "nosniff");
+  assert.equal(
+    response.headers.get("referrer-policy"),
+    "strict-origin-when-cross-origin",
+  );
+  assert.match(
+    response.headers.get("content-security-policy") ?? "",
+    /frame-ancestors 'none'/,
+  );
+  const html = await response.text();
+  assert.match(html, /Page not found/);
+  assert.match(html, /الصفحة غير موجودة/);
+  assert.match(html, /name="robots" content="noindex, follow"/i);
+  assert.doesNotMatch(html, /rel="canonical"/i);
+  assert.match(html, /href="\/en"/);
+  assert.match(html, /href="\/ar"/);
+});
+
+test("responses carry security policy and optimized image support", async () => {
+  const pageResponse = await fetch(`${origin}/en`);
+  assert.equal(pageResponse.headers.get("x-powered-by"), null);
+  assert.equal(pageResponse.headers.get("x-frame-options"), "DENY");
+  assert.equal(pageResponse.headers.get("x-content-type-options"), "nosniff");
+  assert.equal(
+    pageResponse.headers.get("referrer-policy"),
+    "strict-origin-when-cross-origin",
+  );
+  assert.match(pageResponse.headers.get("content-security-policy") ?? "", /frame-ancestors 'none'/);
+
+  const imageResponse = await fetch(
+    `${origin}/_next/image?url=%2Fimages%2Fsaber-el-shafey-e656975a.png&w=384&q=75`,
+    { headers: { accept: "image/avif,image/webp,image/*" } },
+  );
+  assert.equal(imageResponse.status, 200);
+  assert.match(imageResponse.headers.get("content-type") ?? "", /^image\/(?:avif|webp)$/);
+  assert.ok((await imageResponse.arrayBuffer()).byteLength < 80_000);
 });
