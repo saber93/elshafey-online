@@ -138,6 +138,16 @@ test("unknown routes return the useful bilingual 404 without a canonical", async
     redirect: "manual",
   });
   assert.equal(response.status, 404);
+  assert.equal(response.headers.get("x-frame-options"), "DENY");
+  assert.equal(response.headers.get("x-content-type-options"), "nosniff");
+  assert.equal(
+    response.headers.get("referrer-policy"),
+    "strict-origin-when-cross-origin",
+  );
+  assert.match(
+    response.headers.get("content-security-policy") ?? "",
+    /frame-ancestors 'none'/,
+  );
   const html = await response.text();
   assert.match(html, /Page not found/);
   assert.match(html, /الصفحة غير موجودة/);

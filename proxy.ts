@@ -7,6 +7,16 @@ const isPreview = ["deploy-preview", "branch-deploy"].includes(
   process.env.CONTEXT ?? "",
 );
 
+const notFoundSecurityHeaders = {
+  "Content-Security-Policy":
+    "default-src 'self'; base-uri 'self'; connect-src 'self'; font-src 'self' data:; form-action 'none'; frame-ancestors 'none'; img-src 'self' data: blob:; object-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; upgrade-insecure-requests",
+  "Cross-Origin-Opener-Policy": "same-origin",
+  "Permissions-Policy": "camera=(), geolocation=(), microphone=()",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+  "X-Content-Type-Options": "nosniff",
+  "X-Frame-Options": "DENY",
+} as const;
+
 function escapeHtml(value: string) {
   return value
     .replaceAll("&", "&amp;")
@@ -55,6 +65,7 @@ export function proxy(request: NextRequest) {
   return new NextResponse(notFoundDocument(), {
     status: 404,
     headers: {
+      ...notFoundSecurityHeaders,
       "Cache-Control": "public, max-age=0, must-revalidate",
       "Content-Type": "text/html; charset=utf-8",
       "X-Robots-Tag": isPreview ? "noindex, nofollow" : "noindex, follow",
