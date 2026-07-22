@@ -12,7 +12,7 @@ for (const locale of ["en", "ar"] as const) {
     });
     page.on("pageerror", (error) => pageErrors.push(error.message));
 
-    const response = await page.goto(`/${locale}`, { waitUntil: "networkidle" });
+    const response = await page.goto(`/${locale}`, { waitUntil: "load" });
     expect(response?.status()).toBe(200);
     await expect(page.locator("html")).toHaveAttribute("lang", locale);
     await expect(page.locator("h1")).toHaveCount(1);
@@ -56,7 +56,7 @@ for (const locale of ["en", "ar"] as const) {
 
 test("unknown route remains a navigable noindex 404", async ({ page }) => {
   const response = await page.goto("/not-in-the-directory", {
-    waitUntil: "networkidle",
+    waitUntil: "load",
   });
   expect(response?.status()).toBe(404);
   await expect(page.locator('meta[name="robots"][content*="noindex"]')).toHaveCount(1);
