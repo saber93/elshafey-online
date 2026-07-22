@@ -25,6 +25,14 @@ assert.doesNotMatch(robots, /Sitemap:/);
 const manifest = JSON.parse(routesManifest);
 const rootHeaders = manifest.headers.find((entry) => entry.source === "/:path*");
 assert.ok(rootHeaders);
+const contentSecurityPolicy = rootHeaders.headers.find(
+  (header) => header.key === "Content-Security-Policy",
+);
+assert.match(
+  contentSecurityPolicy?.value ?? "",
+  /frame-src https:\/\/app\.netlify\.com/,
+);
+assert.match(contentSecurityPolicy?.value ?? "", /frame-ancestors 'none'/);
 assert.ok(
   rootHeaders.headers.some(
     (header) =>

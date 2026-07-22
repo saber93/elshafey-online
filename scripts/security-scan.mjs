@@ -88,6 +88,11 @@ for (const key of [
 ]) {
   assert.ok(rootHeaders.headers.some((header) => header.key === key));
 }
+const productionCsp = rootHeaders.headers.find(
+  (header) => header.key === "Content-Security-Policy",
+)?.value;
+assert.match(productionCsp ?? "", /frame-src 'none'/);
+assert.doesNotMatch(productionCsp ?? "", /app\.netlify\.com/);
 assert.equal(rootHeaders.headers.some((header) => header.key === "X-Robots-Tag"), false);
 
 const packageData = JSON.parse(packageJson);
