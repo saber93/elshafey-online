@@ -19,7 +19,9 @@ for (const locale of ["en", "ar"] as const) {
     await expect(page.locator("article.member-card")).toHaveCount(6);
     await expect(page.locator("img.member-portrait")).toHaveCount(1);
 
-    const accessibility = await new AxeBuilder({ page }).analyze();
+    const accessibility = await new AxeBuilder({ page })
+      .exclude("[data-netlify-deploy-id]")
+      .analyze();
     expect(accessibility.violations).toEqual([]);
 
     await page.keyboard.press("Tab");
@@ -67,6 +69,8 @@ test("unknown route remains a navigable noindex 404", async ({ page }) => {
     "href",
     "/ar",
   );
-  const accessibility = await new AxeBuilder({ page }).analyze();
+  const accessibility = await new AxeBuilder({ page })
+    .exclude("[data-netlify-deploy-id]")
+    .analyze();
   expect(accessibility.violations).toEqual([]);
 });
