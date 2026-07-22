@@ -15,13 +15,14 @@ async function walk(directory) {
   return paths;
 }
 
-const [appFiles, publicFiles, clientFiles, routesManifest, nextConfig, proxySource, packageJson, gitignore, eslintConfig, hostingBytes, portraitBytes, socialBytes] =
+const [appFiles, publicFiles, clientFiles, routesManifest, nextConfig, netlifyConfig, proxySource, packageJson, gitignore, eslintConfig, hostingBytes, portraitBytes, socialBytes] =
   await Promise.all([
     walk(new URL("app/", root)),
     walk(new URL("public/", root)),
     walk(new URL(".next/static/", root)),
     readFile(new URL(".next/routes-manifest.json", root), "utf8"),
     readFile(new URL("next.config.ts", root), "utf8"),
+    readFile(new URL("netlify.toml", root), "utf8"),
     readFile(new URL("proxy.ts", root), "utf8"),
     readFile(new URL("package.json", root), "utf8"),
     readFile(new URL(".gitignore", root), "utf8"),
@@ -46,6 +47,19 @@ assert.match(nextConfig, /X-Robots-Tag/);
 assert.match(nextConfig, /noindex, nofollow/);
 assert.match(proxySource, /status:\s*404/);
 assert.match(proxySource, /X-Robots-Tag/);
+for (const assetPath of [
+  "/_next/static/*",
+  "/images/*",
+  "/og-family-5d24203e.jpg",
+]) {
+  const escapedPath = assetPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const block = netlifyConfig.match(
+    new RegExp(`for = "${escapedPath}"[\\s\\S]*?(?=\\n\\[\\[headers\\]\\]|$)`),
+  )?.[0];
+  assert.ok(block, `Missing Netlify header block for ${assetPath}`);
+  assert.match(block, /Cache-Control = "public, max-age=31536000, immutable"/);
+  assert.match(block, /X-Content-Type-Options = "nosniff"/);
+}
 
 const publicNames = publicFiles.map((url) => url.pathname.replace(new URL("public/", root).pathname, ""));
 assert.deepEqual(
