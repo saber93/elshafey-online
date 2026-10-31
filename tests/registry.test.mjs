@@ -57,12 +57,14 @@ test("the registry preserves order while limiting members to approved names and 
   );
 
   const portraits = familyRegistry.members.filter((member) => "portrait" in member);
-  assert.equal(portraits.length, 1);
-  assert.equal(portraits[0]?.id, "saber");
-  assert.equal(
-    portraits[0]?.portrait.src,
-    "/images/saber-el-shafey-e656975a.png",
+  assert.deepEqual(
+    portraits.map((member) => [member.id, member.portrait.src]),
+    [
+      ["wesam", "/images/wesam-el-shafey-471fa8f5.avif"],
+      ["saber", "/images/saber-el-shafey-d4245955.avif"],
+    ],
   );
+  assert.equal(familyRegistry.members[3].website, "https://wesam.elshafey.online");
 });
 
 test("schema is limited to WebSite, CollectionPage, ItemList and approved Person facts", () => {
@@ -81,12 +83,14 @@ test("schema is limited to WebSite, CollectionPage, ItemList and approved Person
     for (const [index, person] of people.entries()) {
       assert.ok(
         Object.keys(person).every((key) =>
-          ["@type", "name", "description", "image"].includes(key),
+          ["@type", "name", "description", "image", "url"].includes(key),
         ),
       );
       assert.equal(person.name, expectedMembers[index][language === "en" ? 0 : 1]);
       assert.equal(person.description, expectedMembers[index][language === "en" ? 2 : 3]);
-      assert.equal("image" in person, index === 4);
+      assert.equal("image" in person, index === 3 || index === 4);
+      assert.equal("url" in person, index === 3);
+      if (index === 3) assert.equal(person.url, "https://wesam.elshafey.online");
     }
   }
 });

@@ -17,7 +17,8 @@ for (const locale of ["en", "ar"] as const) {
     await expect(page.locator("html")).toHaveAttribute("lang", locale);
     await expect(page.locator("h1")).toHaveCount(1);
     await expect(page.locator("article.member-card")).toHaveCount(6);
-    await expect(page.locator("img.member-portrait")).toHaveCount(1);
+    await expect(page.locator("img.member-portrait")).toHaveCount(2);
+    await expect(page.locator('a[href="https://wesam.elshafey.online"]')).toBeVisible();
 
     const accessibility = await new AxeBuilder({ page })
       .exclude("[data-netlify-deploy-id]")
@@ -45,6 +46,11 @@ for (const locale of ["en", "ar"] as const) {
       await expect(menu).toHaveAttribute("aria-expanded", "false");
     }
 
+    for (const portrait of await page.locator("img.member-portrait").all()) {
+      await portrait.scrollIntoViewIfNeeded();
+      await expect.poll(() => portrait.evaluate((image: HTMLImageElement) => image.naturalWidth)).toBeGreaterThan(0);
+    }
+    await page.evaluate(() => window.scrollTo(0, 0));
     await page.screenshot({
       path: testInfo.outputPath(`${locale}-full-page.png`),
       fullPage: true,

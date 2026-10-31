@@ -15,7 +15,7 @@ async function walk(directory) {
   return paths;
 }
 
-const [appFiles, publicFiles, clientFiles, routesManifest, nextConfig, netlifyConfig, proxySource, packageJson, gitignore, eslintConfig, hostingBytes, portraitBytes, socialBytes] =
+const [appFiles, publicFiles, clientFiles, routesManifest, nextConfig, netlifyConfig, proxySource, packageJson, gitignore, eslintConfig, hostingBytes, portraitBytes, wesamPortraitBytes, socialBytes] =
   await Promise.all([
     walk(new URL("app/", root)),
     walk(new URL("public/", root)),
@@ -28,7 +28,8 @@ const [appFiles, publicFiles, clientFiles, routesManifest, nextConfig, netlifyCo
     readFile(new URL(".gitignore", root), "utf8"),
     readFile(new URL("eslint.config.mjs", root), "utf8"),
     readFile(new URL(".openai/hosting.json", root)),
-    readFile(new URL("public/images/saber-el-shafey-e656975a.png", root)),
+    readFile(new URL("public/images/saber-el-shafey-d4245955.avif", root)),
+    readFile(new URL("public/images/wesam-el-shafey-471fa8f5.avif", root)),
     readFile(new URL("public/og-family-5d24203e.jpg", root)),
   ]);
 
@@ -63,8 +64,8 @@ for (const assetPath of [
 
 const publicNames = publicFiles.map((url) => url.pathname.replace(new URL("public/", root).pathname, ""));
 assert.deepEqual(
-  publicNames.filter((name) => name.startsWith("images/")),
-  ["images/saber-el-shafey-e656975a.png"],
+  publicNames.filter((name) => name.startsWith("images/")).sort(),
+  ["images/saber-el-shafey-d4245955.avif", "images/wesam-el-shafey-471fa8f5.avif"],
 );
 assert.ok(publicNames.includes("og-family-5d24203e.jpg"));
 assert.ok(!publicNames.includes("og.png"));
@@ -113,7 +114,11 @@ assert.equal(
 );
 assert.equal(
   createHash("sha256").update(portraitBytes).digest("hex"),
-  "e656975ac5320a6590febb564ab2cfae0bce5483fd74bfcad8e6cdeae38ba58b",
+  "d424595537e53b4057476c1cfbd6725532b27005bd554c90ba11911943ccfd12",
+);
+assert.equal(
+  createHash("sha256").update(wesamPortraitBytes).digest("hex"),
+  "471fa8f50c4f8af6df9f704e9a8ce0baff2e9359ec34f30273be0325d4fde929",
 );
 assert.equal(
   createHash("sha256").update(socialBytes).digest("hex"),

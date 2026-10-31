@@ -185,6 +185,13 @@ export function FamilyPage({ language }: { language: Language }) {
                       </span>
                     </div>
                     <p className="member-field">{member.field[language]}</p>
+                    {"website" in member ? (
+                      <a className="member-website" href={member.website}>
+                        {copy.directory.websiteLabel}
+                        <span className="sr-only"> — {member.name[language]}</span>
+                        <span aria-hidden="true"> ↗</span>
+                      </a>
+                    ) : null}
                   </div>
                 </article>
               ))}

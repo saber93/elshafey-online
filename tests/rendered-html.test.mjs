@@ -104,8 +104,9 @@ test("English and Arabic owners render localized crawlable HTML", async () => {
     assert.match(html, /"@type":"CollectionPage"/);
     assert.match(html, /"@type":"ItemList"/);
     assert.equal((html.match(/"@type":"Person"/g) ?? []).length, 6);
-    assert.equal((html.match(/"image":"https:\/\/elshafey\.online\/images\/saber-el-shafey-e656975a\.png"/g) ?? []).length, 1);
-    assert.equal((html.match(/class="member-portrait"/g) ?? []).length, 1);
+    assert.equal((html.match(/"image":"https:\/\/elshafey\.online\/images\/(?:saber-el-shafey-d4245955|wesam-el-shafey-471fa8f5)\.avif"/g) ?? []).length, 2);
+    assert.equal((html.match(/class="member-portrait"/g) ?? []).length, 2);
+    assert.match(html, /href="https:\/\/wesam\.elshafey\.online"/);
     assert.doesNotMatch(
       html,
       /Google-Certified|Al-Azhar University|Grandfather|Elder Brother|Younger Brother|Consultant|Advisor|معتمد من Google|جامعة الأزهر|الجد|الأخ الأكبر|الأخ الأصغر|مستشار/i,
@@ -169,7 +170,7 @@ test("responses carry security policy and optimized image support", async () => 
   assert.match(pageResponse.headers.get("content-security-policy") ?? "", /frame-ancestors 'none'/);
 
   const imageResponse = await fetch(
-    `${origin}/_next/image?url=%2Fimages%2Fsaber-el-shafey-e656975a.png&w=384&q=75`,
+    `${origin}/_next/image?url=%2Fimages%2Fsaber-el-shafey-d4245955.avif&w=384&q=75`,
     { headers: { accept: "image/avif,image/webp,image/*" } },
   );
   assert.equal(imageResponse.status, 200);

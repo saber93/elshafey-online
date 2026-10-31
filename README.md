@@ -41,8 +41,9 @@ canonical routes, sitemap ownership, schema eligibility, and evidence references
 live in `app/family-registry.ts`.
 
 - Keep member facts limited to approved names and broad fields.
-- Only Saber has an approved portrait and Person image field.
-- The other five visual cards use truthful initials and emit no image field.
+- Wesam and Saber have owner-approved portraits copied from their personal sites.
+- Wesam's card links to `https://wesam.elshafey.online` in both languages.
+- The other four visual cards use truthful initials and emit no image field.
 - Structured data is limited to `WebSite`, `CollectionPage`, `ItemList`, and the
   visible approved `Person` facts.
 - Unknown routes are intercepted by the Next proxy and return a useful bilingual

@@ -30,6 +30,7 @@ type MemberRecord = Readonly<{
   initials: string;
   name: LocalizedText;
   field: LocalizedText;
+  website?: `https://${string}`;
   portrait?: Readonly<{
     src: string;
     width: number;
@@ -71,6 +72,7 @@ type LocaleContent = Readonly<{
     title: string;
     introduction: string;
     fieldLabel: string;
+    websiteLabel: string;
   }>;
   notFound: Readonly<{
     title: string;
@@ -125,6 +127,7 @@ export const familyRegistry = {
         introduction:
           "Each entry is intentionally limited to an approved name and a broad field.",
         fieldLabel: "Broad field",
+        websiteLabel: "Visit website",
       },
       notFound: {
         title: "Page not found",
@@ -169,6 +172,7 @@ export const familyRegistry = {
         title: "الأسماء والمجالات العامة",
         introduction: "يقتصر كل تعريف على اسم معتمد ومجال عام.",
         fieldLabel: "المجال العام",
+        websiteLabel: "زيارة الموقع",
       },
       notFound: {
         title: "الصفحة غير موجودة",
@@ -202,6 +206,16 @@ export const familyRegistry = {
       initials: "WE",
       name: { en: "Wesam El Shafey", ar: "وسام الشافعي" },
       field: { en: "HVAC", ar: "التدفئة والتهوية وتكييف الهواء" },
+      website: "https://wesam.elshafey.online",
+      portrait: {
+        src: "/images/wesam-el-shafey-471fa8f5.avif",
+        width: 581,
+        height: 728,
+        alt: {
+          en: "Portrait of Wesam El Shafey",
+          ar: "صورة وسام الشافعي",
+        },
+      },
     },
     {
       id: "saber",
@@ -209,9 +223,9 @@ export const familyRegistry = {
       name: { en: "Saber El Shafey", ar: "صابر الشافعي" },
       field: { en: "UX", ar: "تجربة المستخدم" },
       portrait: {
-        src: "/images/saber-el-shafey-e656975a.png",
-        width: 384,
-        height: 384,
+        src: "/images/saber-el-shafey-d4245955.avif",
+        width: 413,
+        height: 531,
         alt: {
           en: "Portrait of Saber El Shafey",
           ar: "صورة صابر الشافعي",
@@ -295,6 +309,7 @@ export function structuredDataFor(language: Language) {
             "@type": "Person",
             name: member.name[language],
             description: member.field[language],
+            ...("website" in member ? { url: member.website } : {}),
             ...("portrait" in member
               ? { image: new URL(member.portrait.src, SITE_URL).href }
               : {}),

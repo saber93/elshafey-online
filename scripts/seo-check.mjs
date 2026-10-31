@@ -41,7 +41,7 @@ for (const route of routeRegistry) {
   assert.ok(html.includes('"@type":"CollectionPage"'));
   assert.ok(html.includes('"@type":"ItemList"'));
   assert.equal((html.match(/"@type":"Person"/g) ?? []).length, 6);
-  assert.equal((html.match(/class="member-portrait"/g) ?? []).length, 1);
+  assert.equal((html.match(/class="member-portrait"/g) ?? []).length, 2);
   assert.doesNotMatch(html, /ProfilePage|og:locale|deploy-preview--|netlify\.app/i);
 }
 

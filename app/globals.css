@@ -838,6 +838,22 @@ html[lang="ar"] .member-card h3 {
   line-height: 1.55;
 }
 
+.member-website {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 12px;
+  color: var(--navy-800);
+  font-size: 14px;
+  font-weight: 750;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.member-website:hover {
+  color: var(--navy-950);
+}
+
 .portrait-wrap-real {
   background:
     radial-gradient(circle at 50% 36%, rgba(247, 243, 234, 0.96), rgba(219, 182, 111, 0.2) 46%, transparent 70%),

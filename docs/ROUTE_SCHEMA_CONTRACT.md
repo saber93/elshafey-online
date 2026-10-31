@@ -20,7 +20,9 @@ The JSON-LD graph is limited to:
 3. `ItemList`
 
 Each list item contains a `Person` with a visible approved name and broad field.
-Only Saber may include the approved portrait URL. Relationship, employer,
+Wesam and Saber include owner-approved local portrait URLs. Wesam also includes
+his visible personal website URL, as requested by the owner on 2026-10-31.
+Relationship, employer,
 institution, qualification, certification, consultant/advisor, and inferred
 biographical fields are prohibited.
 
