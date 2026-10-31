@@ -222,6 +222,7 @@ export const familyRegistry = {
       initials: "SE",
       name: { en: "Saber El Shafey", ar: "صابر الشافعي" },
       field: { en: "UX", ar: "تجربة المستخدم" },
+      website: "https://saber.elshafey.online",
       portrait: {
         src: "/images/saber-el-shafey-d4245955.avif",
         width: 413,

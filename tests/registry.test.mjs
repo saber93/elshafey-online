@@ -65,6 +65,7 @@ test("the registry preserves order while limiting members to approved names and 
     ],
   );
   assert.equal(familyRegistry.members[3].website, "https://wesam.elshafey.online");
+  assert.equal(familyRegistry.members[4].website, "https://saber.elshafey.online");
 });
 
 test("schema is limited to WebSite, CollectionPage, ItemList and approved Person facts", () => {
@@ -89,8 +90,9 @@ test("schema is limited to WebSite, CollectionPage, ItemList and approved Person
       assert.equal(person.name, expectedMembers[index][language === "en" ? 0 : 1]);
       assert.equal(person.description, expectedMembers[index][language === "en" ? 2 : 3]);
       assert.equal("image" in person, index === 3 || index === 4);
-      assert.equal("url" in person, index === 3);
+      assert.equal("url" in person, index === 3 || index === 4);
       if (index === 3) assert.equal(person.url, "https://wesam.elshafey.online");
+      if (index === 4) assert.equal(person.url, "https://saber.elshafey.online");
     }
   }
 });

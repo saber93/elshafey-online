@@ -42,7 +42,7 @@ live in `app/family-registry.ts`.
 
 - Keep member facts limited to approved names and broad fields.
 - Wesam and Saber have owner-approved portraits copied from their personal sites.
-- Wesam's card links to `https://wesam.elshafey.online` in both languages.
+- Wesam and Saber's cards link to their personal websites in both languages.
 - The other four visual cards use truthful initials and emit no image field.
 - Structured data is limited to `WebSite`, `CollectionPage`, `ItemList`, and the
   visible approved `Person` facts.
